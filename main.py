@@ -53,16 +53,16 @@ if __name__ == '__main__':
     
     #initializing encoder and decoder
 
-
-    Encoder = model.Encoder(codings_size=latent_dim,inp_shape=(28,28)).to(device)
-    Decoder = model.Decoder(codings_size=latent_dim,inp_shape=(28,28)).to(device)
+    print("init Encoder and Decoder")
+    Encoder = model.Encoder(codings_size=latent_dim,inp_shape=input_shape).to(device)
+    Decoder = model.Decoder(codings_size=latent_dim,inp_shape=input_shape).to(device)
 
     #initializing model
     net = model.VAE_Dense(Encoder,Decoder).to(device)
     optimizer = optim.Adam(net.parameters())
 
 
-
+    print("started training..")
     for epoch in range(epochs):  # loop over the dataset multiple times
 
         running_loss = 0.0
@@ -74,7 +74,7 @@ if __name__ == '__main__':
                 continue
             optimizer.zero_grad()
             outputs,mean,logvar = net(inputs)
-            latent_loss = loss.latent_loss_bce(inputs.view(batch_size,784), outputs,mean,logvar)
+            latent_loss = loss.latent_loss_bce(outputs,inputs.view(batch_size,784),mean,logvar)
             latent_loss.backward()
 
             optimizer.step()
