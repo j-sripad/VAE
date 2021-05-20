@@ -1,3 +1,4 @@
+![result](https://user-images.githubusercontent.com/39008190/119038179-727c0a80-b9d0-11eb-854b-8ac92c50d27c.jpeg)
 #### Simple VAE implementation in pytorch 
 
 ##### Usage
