@@ -17,7 +17,7 @@ import loss
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser(description='Train VAELinear')
-    parser.add_argument('--input_shape', default=(28,28), type=tuple)
+    parser.add_argument('--input_shape',  nargs='+', type=int)
     parser.add_argument('--latent_dimension', default=20, type=int)
     parser.add_argument('--Dataset', default="MNIST", type=str, help='MNIST or FashionMNIST')
     parser.add_argument('--batch_size', default=128, type=int, help='Number of images in each mini-batch')
@@ -27,9 +27,13 @@ if __name__ == '__main__':
     args = parser.parse_args()
     batch_size = args.batch_size
     epochs = args.epochs
-    input_shape = args.input_shape
+    input_shape = tuple(args.input_shape)
     latent_dim = args.latent_dimension
     PATH = 'model/model.pth'
+    transform = transforms.Compose([
+                transforms.ToTensor(),
+            ])
+    device = torch.device("cuda" if True else "cpu")
 
     if args.Dataset == 'FashionMNIST':
         train_set = torchvision.datasets.FashionMNIST('data', train=True, download=True,transform=transform)
@@ -43,18 +47,15 @@ if __name__ == '__main__':
         test_loader = torch.utils.data.DataLoader(test_set)
 
     #defining transforms
-    transform = transforms.Compose([
-                transforms.ToTensor(),
-            ])
-    device = torch.device("cuda" if True else "cpu")
+   
     
     
     
     #initializing encoder and decoder
 
 
-    Encoder = model.Encoder(codings_size=20,inp_shape=(28,28)).to(device)
-    Decoder = model.Decoder(codings_size=20,inp_shape=(28,28)).to(device)
+    Encoder = model.Encoder(codings_size=latent_dim,inp_shape=(28,28)).to(device)
+    Decoder = model.Decoder(codings_size=latent_dim,inp_shape=(28,28)).to(device)
 
     #initializing model
     net = model.VAE_Dense(Encoder,Decoder).to(device)
