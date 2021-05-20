@@ -1,4 +1,4 @@
-data
+data/
 VAE.ipynb
 .gitignore
-__pycache__
+__pycache__/
