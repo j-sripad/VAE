@@ -6,7 +6,7 @@
 python3 main.py --input_shape 28 28 --latent_dimension 20 --Dataset FashionMNIST --epochs 50 --batch_size 128
 </code></pre>
 <br>
-###### here Dataset can be FashionMNIST or MNIST
+##### here Dataset can be FashionMNIST or MNIST
 > To generate synthetic Images from the trained model
 <pre><code>
 python3 generate_synthetic_data.py --input_shape 28 28 --latent_dimension 20 --batch_size 30 --model_path model/FashionMnist_model.pth --save_path generated_images/
