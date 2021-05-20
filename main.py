@@ -1,11 +1,7 @@
 import torch
-import torch.nn as nn
-import torch.nn.functional as F
-from typing import Tuple, Dict, Optional
 import torch.optim as optim
-from torchvision import datasets,transforms
+from torchvision import transforms
 import torchvision
-import tqdm
 import argparse
 import model
 import loss
@@ -22,6 +18,7 @@ if __name__ == '__main__':
     parser.add_argument('--Dataset', default="MNIST", type=str, help='MNIST or FashionMNIST')
     parser.add_argument('--batch_size', default=128, type=int, help='Number of images in each mini-batch')
     parser.add_argument('--epochs', default=50, type=int, help='Number of sweeps over the dataset to train')
+    parser.add_argument('--save_model', default="model/model.pth", type=int, help='Model save path')
 
     # args parse
     args = parser.parse_args()
@@ -29,10 +26,14 @@ if __name__ == '__main__':
     epochs = args.epochs
     input_shape = tuple(args.input_shape)
     latent_dim = args.latent_dimension
-    PATH = 'model/model.pth'
+    PATH = args.save_model
+
+     #defining transforms
     transform = transforms.Compose([
                 transforms.ToTensor(),
             ])
+
+    #selecting GPU if available
     device = torch.device("cuda" if True else "cpu")
 
     if args.Dataset == 'FashionMNIST':
@@ -46,7 +47,7 @@ if __name__ == '__main__':
         train_loader = torch.utils.data.DataLoader(train_set,batch_size=batch_size,shuffle=True)
         test_loader = torch.utils.data.DataLoader(test_set)
 
-    #defining transforms
+   
    
     
     
@@ -70,6 +71,7 @@ if __name__ == '__main__':
         
             inputs, labels = data
             inputs = inputs.cuda()
+            #skipping offset batches
             if len(inputs) < batch_size:
                 continue
             optimizer.zero_grad()

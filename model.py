@@ -10,6 +10,7 @@ import tqdm
 
 
 class Sampling(nn.Module):
+    # Sampling from a random normal distribution
     def __init__(self, means: torch.Tensor, logvars: torch.Tensor):
         super().__init__()
         self.mean = means
@@ -21,6 +22,8 @@ class Sampling(nn.Module):
 
 
 class Encoder(nn.Module):
+
+    #Implementing the encoder part
     def __init__(self, codings_size : int = 20, inp_shape : tuple = (28,28))->None:
         super().__init__()
         self.codings_size = codings_size
@@ -41,6 +44,7 @@ class Encoder(nn.Module):
 
 
 class Decoder(nn.Module):
+    #Implementing the decoder part
     def __init__(self, codings_size : int = 20,  inp_shape : tuple = (28,28))->None:
         super().__init__()
         self.codings_size = codings_size
